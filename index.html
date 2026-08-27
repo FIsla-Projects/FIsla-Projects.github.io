@@ -84,11 +84,10 @@
   <!-- ABOUT STRIP -->
   <section class="about wrap">
     <p>
-      HND graduate in Electronic Engineering with a particular interest in circuit design and
+      HND graduate in Electronic Engineering with an interest in circuit design and
       embedded systems. My HND dissertation was a CAD-based DRAM macro cell design; the project
-      below is that work taken further, on my own time, using industry-standard open-source
-      tools. I have also spent time tutoring and doing freelance AI model training and
-      evaluation work, which has kept my analytical and communication skills sharp.
+      below is that work taken further, using open-source tools such as LTSPice and KLayout. I have also spent time tutoring and doing freelance AI model training and
+      evaluation work, which highlights my analysis and communication skills.
     </p>
   </section>
 
@@ -99,14 +98,14 @@
         <p class="eyebrow">Featured project</p>
         <h2>CMOS DRAM cell &mdash; design, debug, layout</h2>
         <p class="project-summary">
-          A 1T1C DRAM memory cell taken from a blank schematic through write, read, leakage
-          and refresh behaviour in LTspice, then translated into a fabricable physical layout
+          A 1T1C DRAM memory cell taken from a simple schematic through write, read, leakage
+          and refresh behaviour in LTspice. I then attempted to make this a physical layout
           in KLayout using the open-source SkyWater sky130 process design kit.
         </p>
       </div>
 
       <ul class="stat-strip">
-        <li><span class="stat-num">1T1C</span><span class="stat-lbl">cell topology</span></li>
+        <li><span class="stat-num">1T1C</span><span class="stat-lbl">cell design</span></li>
         <li><span class="stat-num">sky130</span><span class="stat-lbl">PDK used for layout</span></li>
         <li><span class="stat-num">6+</span><span class="stat-lbl">bugs found and resolved</span></li>
         <li><span class="stat-num">250mV</span><span class="stat-lbl">sense margin achieved</span></li>
@@ -116,9 +115,9 @@
       <div class="subsection">
         <h3><span class="sub-index">01</span> Design and simulation</h3>
         <p class="sub-intro">
-          Built the storage cell, cross-coupled sense amplifier and reference branch in
-          LTspice, then verified write, read and charge-leakage behaviour against analytical
-          predictions.
+          Built a storage cell, cross-coupled sense amplifier and reference branch in
+          LTspice. I then ran simulations to make sure that write, read and leakage behaviour could be compared to real life DRAM cells.
+          
         </p>
         <div class="shot-grid">
           <figure class="shot" data-caption="Cross-coupled sense amplifier schematic">
@@ -140,8 +139,8 @@
       <div class="subsection">
         <h3><span class="sub-index">02</span> Debug log</h3>
         <p class="sub-intro">
-          Circuit-level faults never announce themselves. Every one of these was found by
-          reading a waveform that looked wrong, then tracing it back through the netlist.
+          Debugging is as important as initial design. Every one of these was found by
+          running simulations at different nodes and obtaining a waveform that looked wrong, then looking at the SPICE netlist to see the connections.
         </p>
 
         <div class="bug-log">
@@ -152,7 +151,7 @@
               <h4>Vdd shorted through the netlist</h4>
             </div>
             <p>Supply rail was accidentally tied to a signal node in the generated netlist,
-              collapsing the sense amplifier's operating point.</p>
+              which caused the sense amplifier's operating point to start the wrong value.</p>
             <div class="bug-pair">
               <figure class="shot"><img src="images/02_bug_vdd_shorted_netlist.png" alt="Netlist showing Vdd shorted to a signal node"><figcaption>Before</figcaption></figure>
               <figure class="shot"><img src="images/03_fixed_vdd_netlist.png" alt="Corrected netlist with Vdd properly isolated"><figcaption>After</figcaption></figure>
@@ -179,7 +178,7 @@
               <h4>BLB shorted to BL</h4>
             </div>
             <p>The complementary bitline was accidentally tied to the true bitline, which
-              destroyed the differential signal the sense amp depends on.</p>
+             meant that the differential signal the sense amp depends on was an incorrect value.</p>
             <div class="bug-pair">
               <figure class="shot"><img src="images/10_bug_blb_shorted_to_bl_netlist.png" alt="Netlist showing BLB shorted to BL"><figcaption>Before</figcaption></figure>
               <figure class="shot"><img src="images/11_fixed_reference_branch_schematic.png" alt="Corrected reference branch schematic with BLB and BL properly isolated"><figcaption>After</figcaption></figure>
@@ -192,8 +191,7 @@
               <h4>Paralleled voltage sources, missing initial condition</h4>
             </div>
             <p>Two voltage sources were unintentionally paralleled on the same node, and a
-              missing <code>.ic</code> statement let the storage node swing further than the
-              real device would allow.</p>
+              missing <code>.ic</code> statement let the storage node swing at an unrealistic rate.</p>
             <div class="bug-pair">
               <figure class="shot"><img src="images/12_bug_paralleled_voltage_sources.png" alt="Netlist showing two voltage sources incorrectly paralleled"><figcaption>Bug 1</figcaption></figure>
               <figure class="shot"><img src="images/13_bug_missing_ic_term_large_swing.png" alt="Waveform showing an unrealistically large voltage swing from a missing initial condition"><figcaption>Bug 2</figcaption></figure>
@@ -232,8 +230,8 @@
       <div class="subsection">
         <h3><span class="sub-index">03</span> Sense amp as a reusable subcircuit</h3>
         <p class="sub-intro">
-          Verified the sense amplifier in isolation before integrating it, then packaged it as
-          a subcircuit with its own symbol so it could be dropped into the full cell schematic.
+          Tested the sense amplifier by itself, then saved it as
+          a subcircuit with its own symbol so it could be added into the full cell schematic.
         </p>
         <div class="shot-grid">
           <figure class="shot"><img src="images/06_standalone_latch_resolved.png" alt="Standalone sense amplifier latch resolving correctly in isolation"><figcaption>Standalone latch, resolved</figcaption></figure>
@@ -248,7 +246,7 @@
         <h3><span class="sub-index">04</span> Verified results</h3>
         <p class="sub-intro">
           Read-0, read-1, write and charge-leakage behaviour, each checked against the
-          analytical expectation before being marked verified.
+          what was to be expected based on theory before confirming it worked.
         </p>
         <div class="shot-grid">
           <figure class="shot"><img src="images/read0_result_zoomed.png" alt="Zoomed waveform of a correct read-0 operation"><figcaption>Read-0 result</figcaption></figure>
@@ -264,7 +262,7 @@
       <div class="subsection">
         <h3><span class="sub-index">05</span> Physical layout, sky130 PDK</h3>
         <p class="sub-intro">
-          Translated the verified circuit into fabricable geometry in KLayout, working through
+          Translated the verified circuit into physical geometry in KLayout, working through
           the sky130 layer stack to build a working transistor and full cell layout.
         </p>
         <div class="shot-grid">
