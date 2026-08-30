@@ -39,7 +39,7 @@
       <p class="hero-lede">
         IC design work built on top of my HND dissertation: a 1T1C DRAM memory
         cell taken from schematic to simulated waveform to physical silicon layout,
-        plus an embedded environmental monitoring build.
+        plus a live bus arrivals display built around the TfL API.
       </p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#dram">View the DRAM project</a>
@@ -279,20 +279,66 @@
   <section class="project project-alt" id="embedded">
     <div class="wrap">
       <div class="project-head">
-        <p class="eyebrow">Second project</p>
-        <h2>Embedded environmental monitoring system</h2>
+        <p class="eyebrow">Second project &middot; in progress</p>
+        <h2>Live bus arrivals display</h2>
         <p class="project-summary">
-          A Raspberry Pi Pico build integrating multiple sensors, a live display and on-device
-          data logging.
+          A Raspberry Pi 3 Model B+ pulling live arrival data from the TfL Unified API and
+          rendering it as a self-updating departure board, built toward a standalone desk unit
+          about the size of an alarm clock.
         </p>
       </div>
+
+      <ul class="stat-strip">
+        <li><span class="stat-num">Pi 3 B+</span><span class="stat-lbl">board</span></li>
+        <li><span class="stat-num">TfL API</span><span class="stat-lbl">live data source</span></li>
+        <li><span class="stat-num">30s</span><span class="stat-lbl">refresh interval</span></li>
+        <li><span class="stat-num">Pygame</span><span class="stat-lbl">display UI</span></li>
+      </ul>
+
+      <div class="subsection">
+        <h3><span class="sub-index">01</span> Getting the hardware talking</h3>
+        <p class="sub-intro">
+          Flashed Raspberry Pi OS with networking, hostname and SSH pre-configured through
+          Raspberry Pi Imager's advanced options, so the board could be set up and controlled
+          entirely headlessly, with no keyboard ever attached to it.
+        </p>
+      </div>
+
+      <div class="subsection">
+        <h3><span class="sub-index">02</span> Pulling and parsing live data</h3>
+        <p class="sub-intro">
+          Registered for a TfL Unified API key and wrote a Python script to fetch live arrival
+          predictions for a chosen stop, sort them by soonest arrival, and print a clean list,
+          confirmed first via a raw curl request, then in Python using the requests library.
+        </p>
+      </div>
+
+      <div class="subsection">
+        <h3><span class="sub-index">03</span> Building the display</h3>
+        <p class="sub-intro">
+          Built the on-screen board in Pygame, starting with a minimal test window to confirm
+          rendering worked, then combining it with the live data script: a title, up to six
+          upcoming buses per stop, an automatic 30 second refresh, and a fallback message if the
+          API call fails so the board keeps showing the last known times rather than crashing.
+        </p>
+        <div class="shot-grid">
+          <figure class="shot" data-caption="Live departure board running on the test monitor">
+            <img src="images/bus_display_live_v1.jpg" alt="Pygame departure board showing live bus arrival times for Carshalton High Street">
+            <figcaption>Live board, first refresh</figcaption>
+          </figure>
+          <figure class="shot" data-caption="The same board a few minutes later, showing the list updating">
+            <img src="images/bus_display_live_v2.jpg" alt="Pygame departure board a few minutes later, showing updated arrival times">
+            <figcaption>Same board, after a refresh</figcaption>
+          </figure>
+        </div>
+      </div>
+
       <div class="placeholder-note">
-        <p>Photos and a full write-up for this build are being added. In the meantime, here is
-          what it covers:</p>
+        <p>Still to come:</p>
         <ul>
-          <li>Multi-sensor integration on a Raspberry Pi Pico</li>
-          <li>Live display of sensor readings</li>
-          <li>On-device data logging for later analysis</li>
+          <li>A small dedicated colour LCD screen and case, so the final build stands alone rather than using a full monitor</li>
+          <li>Physical push buttons wired into GPIO to switch between saved stops</li>
+          <li>Running the display automatically on boot</li>
         </ul>
       </div>
     </div>
@@ -312,7 +358,7 @@
       </div>
       <div class="skill-card">
         <h3>Embedded systems</h3>
-        <p>Raspberry Pi Pico, sensor integration, data logging</p>
+        <p>Raspberry Pi, Python, REST APIs, Pygame, headless SSH setup</p>
       </div>
       <div class="skill-card">
         <h3>CAD and analysis</h3>
